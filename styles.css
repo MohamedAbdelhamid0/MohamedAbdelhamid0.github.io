@@ -139,3 +139,23 @@ li {
 section {
     margin-bottom: 50px;
 }
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+.container {
+    width: 90%;
+    max-width: 750px;
+    margin: 60px auto;
+    padding: 20px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+
