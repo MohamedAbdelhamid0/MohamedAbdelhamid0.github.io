@@ -13,24 +13,25 @@
 </header>
 <main class="container">
 
-<h1>What Is a <b>RollJam</b> Attack?</h1>
-<p>A <b>RollJam attack</b> is a radio-frequency relay technique that targets cars and devices that use remote keyless entry systems. Instead of breaking encryption, RollJam captures the code the keyfob sends when a user presses a button, then prevents the car from receiving it. This allows an attacker to store one unused, valid rolling code to unlock the car once.</p>
+<h1>what is a <b>RollJam attack?</b></h1>
+<p>this is a method used to exploit vulnerabilities in car that open remotely (not by inserting the key in the door). Basically the idea is capturing the codes sent by the remote when the unlock/lock button is clicked.</p>
 
-<h1>Is This Attack Still Possible?</h1>
+<h1>is that attack still possible?</h1>
+<p>there are two types of this attack</p>
 
-<h2>Old Cars vs Modern Cars</h2>
+<h2>old cars vs modern cars</h2>
 
-<h3>Old Cars</h3>
-<p>Older cars used fixed codes. The unlock button always transmitted the same binary sequence. If an attacker captured these codes once, they could replay them indefinitely because the codes never changed.</p>
+<h3>Old cars (~~ before 2015-2020 for some cars)</h3>
+<p>for old cars, they don't have changing code. the unlock code for a car is fixed for example to be 0010110 and the lock code is 0010101. this means that if a attacker used a gadget like a flipper zero captures the codes being sent by the keyfob to the car, he can later unlock the car whenever he wants (unlimited times since the code is fixed). obviously, this is very dangerous because the codes are fixed so once they're grabbed once, they can be used again and again. how was this solved in modern cars?</p>
 
-<h3>Modern Cars</h3>
-<p>Modern keyfobs use rolling codes so that each press generates a new code from a synchronized sequence shared between the keyfob and the vehicle. This prevents simple replay attacks because the car invalidates each code immediately after use. However, if a jammer prevents the car from receiving the code, the captured code remains valid.</p>
+<h3>Modern cars</h3>
+<p>for modern cars, they now use <b>rolling codes</b>. what does that mean? basically the car has a very very large combination of codes (the same as the keyfob). when the user click the unlock button, that sends the code 0101101 as an example. at the same time, the car detects that this is a valid code so the car gets unlocked and removes this combination from its memory which means that if the car receives this code ever again, it won't be valid. this solved the way of capturing the code because now when the attacker captures the code, it won't be useful since the car already recognized it the first time and removed it from its memory. but as we know, nothing is 100% safe. there's still a vulnerability. What if a signal jammer was under the car?</p>
 
-<h2>How Modern Cars Still Get Attacked</h2>
-<p>If a jammer is placed near the car and the victim presses unlock, the attacker can capture the code while blocking it from the vehicle. Since the car never receives it, the code is still valid and can be used later.</p>
+<h2>how modern cars still got attacked</h2>
+<p>although the method used on the old cars can't be used on modern cars, there's still a vulnerability. if a signal jammer was under the car and the car owner pressed the unlock button, what will happen? the car won't receive the code but the attacker was sniffing for the code. this means that now the attacker got a <b>single unlock code</b> that is valid because the car didn't receive it and consequently didn't remove it from its memory.</p>
 
-<h3>Can This Method Be Patched?</h3>
-<p>Rolling codes follow an ordered sequence. If the car and keyfob are aligned on code 0110 and the attacker blocks the next code 0111, the attacker now holds that stored code. But if the user later presses the button again and the car receives the next value 1000, the car resynchronizes and invalidates all previous codes, including the one captured by the attacker.</p>
+<h3>can this method be patched?</h3>
+<p>well it's not 100% guaranteed but it can be. the codes on the keyfob are ordered meaning that if the current code is 011010110, the next code will be 011010111. here comes the confusing part, the car and keyfob are both on the same code 0110. an attacker adds a jammer near the car. the user pressed the unlock button that sends the code 0111 but the car didn't receive it. now the code the attacker has is 0111. the car is waiting at 0110 and the keyfob is at 1000. if the user presses any button again that sends 1000 to the car and the car reads it, the car will automatically sync to 1000 and mark all codes before 1000 as invalid. this means that the code the attacker has "0111" will be invalid.</p>
 
 </main>
 </body>
