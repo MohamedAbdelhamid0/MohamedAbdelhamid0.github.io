@@ -1,38 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RollJam Attack Explained</title>
-<link rel="stylesheet" href="../styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RollJam Attack: Security Analysis | Mohamed Abdelhamid</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header>
-<h1>RollJam Attack Explained</h1>
-<p>By Mohamed Abdelhamid</p>
-</header>
-<main class="container">
+    <header>
+        <h1>RollJam Attack Explained</h1>
+        <p>By Mohamed Abdelhamid</p>
+    </header>
+    
+    <main class="container">
+        <section class="intro-section">
+            <h1>What is a <span class="highlight">RollJam Attack?</span></h1>
+            <p>A RollJam attack is a method used to exploit vulnerabilities in keyless entry systems for vehicles. The attack involves capturing the radio frequency signals sent by a remote key fob when the owner attempts to lock or unlock their car.</p>
+        </section>
 
-<h1>what is a <b>RollJam attack?</b></h1>
-<p>this is a method used to exploit vulnerabilities in car that open remotely (not by inserting the key in the door). Basically the idea is capturing the codes sent by the remote when the unlock/lock button is clicked.</p>
+        <section class="attack-visualization">
+            <h2>Attack Process Visualization</h2>
+            <div class="attack-diagram">
+                <img src="Visual_Example_MAAbdelhamid.png" alt="Car Key Fob Relay Attack Process Diagram" class="diagram-image">
+                <p class="diagram-caption">Visual representation of a car key fob relay attack showing how signals are intercepted and replayed.</p>
+            </div>
+        </section>
 
-<h1>is that attack still possible?</h1>
-<p>there are two types of this attack</p>
+        <section class="feasibility-section">
+            <h1>Is This Attack Still Possible?</h1>
+            <p>There are two primary variants of this attack, which differ based on vehicle age and security implementation.</p>
+        </section>
 
-<h2>old cars vs modern cars</h2>
+        <section class="comparison-section">
+            <h2>Old Cars vs. Modern Cars</h2>
+            
+            <div class="card">
+                <h3>Older Vehicles (Approximately pre-2015-2020)</h3>
+                <p>Older vehicles typically used static, unchanging codes for their keyless entry systems. For example, the unlock code might be fixed as "0010110" and the lock code as "0010101".</p>
+                <p>This implementation creates a significant security vulnerability. If an attacker captures these codes using a device like a Flipper Zero, they gain permanent access to the vehicle. The captured codes remain valid indefinitely, allowing unlimited unauthorized access.</p>
+                <p class="conclusion">This vulnerability prompted manufacturers to develop more secure solutions for modern vehicles.</p>
+            </div>
+            
+            <div class="card">
+                <h3>Modern Vehicles</h3>
+                <p>Modern vehicles employ <span class="highlight">rolling code</span> technology to enhance security. This system uses an extensive sequence of codes shared between the key fob and vehicle receiver.</p>
+                <p>When a user presses the unlock button, the fob transmits a specific code (e.g., "0101101"). The vehicle validates this code, performs the requested action, and then removes that specific code from its accepted sequence. If the same code is transmitted again, the vehicle will reject it as invalid.</p>
+                <p>This security measure effectively prevents simple code capture attacks. However, as with any security system, determined attackers have identified potential vulnerabilities.</p>
+            </div>
+        </section>
 
-<h3>Old cars (~~ before 2015-2020 for some cars)</h3>
-<p>for old cars, they don't have changing code. the unlock code for a car is fixed for example to be 0010110 and the lock code is 0010101. this means that if a attacker used a gadget like a flipper zero captures the codes being sent by the keyfob to the car, he can later unlock the car whenever he wants (unlimited times since the code is fixed). obviously, this is very dangerous because the codes are fixed so once they're grabbed once, they can be used again and again. how was this solved in modern cars?</p>
+        <section class="vulnerability-section">
+            <h2>How Modern Cars Remain Vulnerable</h2>
+            <p>Although the static code vulnerability has been addressed in modern vehicles, a sophisticated attack method known as RollJam can still compromise rolling code systems.</p>
+            
+            <div class="card">
+                <h3>The RollJam Attack Vector</h3>
+                <p>This attack exploits the synchronization mechanism between the key fob and vehicle:</p>
+                <ol>
+                    <li>An attacker places a signal jammer near the vehicle</li>
+                    <li>When the owner attempts to unlock their car, the jammer blocks the signal from reaching the vehicle</li>
+                    <li>Simultaneously, the attacker captures the transmitted code</li>
+                    <li>The vehicle never receives the valid code, so it remains in the accepted code sequence</li>
+                    <li>The attacker now possesses a <span class="highlight">valid unlock code</span> that the vehicle will accept</li>
+                </ol>
+            </div>
+        </section>
 
-<h3>Modern cars</h3>
-<p>for modern cars, they now use <b>rolling codes</b>. what does that mean? basically the car has a very very large combination of codes (the same as the keyfob). when the user click the unlock button, that sends the code 0101101 as an example. at the same time, the car detects that this is a valid code so the car gets unlocked and removes this combination from its memory which means that if the car receives this code ever again, it won't be valid. this solved the way of capturing the code because now when the attacker captures the code, it won't be useful since the car already recognized it the first time and removed it from its memory. but as we know, nothing is 100% safe. there's still a vulnerability. What if a signal jammer was under the car?</p>
-
-<h2>how modern cars still got attacked</h2>
-<p>although the method used on the old cars can't be used on modern cars, there's still a vulnerability. if a signal jammer was under the car and the car owner pressed the unlock button, what will happen? the car won't receive the code but the attacker was sniffing for the code. this means that now the attacker got a <b>single unlock code</b> that is valid because the car didn't receive it and consequently didn't remove it from its memory.</p>
-
-<h3>can this method be patched?</h3>
-<p>well it's not 100% guaranteed but it can be. the codes on the keyfob are ordered meaning that if the current code is 011010110, the next code will be 011010111. here comes the confusing part, the car and keyfob are both on the same code 0110. an attacker adds a jammer near the car. the user pressed the unlock button that sends the code 0111 but the car didn't receive it. now the code the attacker has is 0111. the car is waiting at 0110 and the keyfob is at 1000. if the user presses any button again that sends 1000 to the car and the car reads it, the car will automatically sync to 1000 and mark all codes before 1000 as invalid. this means that the code the attacker has "0111" will be invalid.</p>
-
-</main>
+        <section class="mitigation-section">
+            <h2>Can This Vulnerability Be Patched?</h2>
+            <p>While no security system is completely invulnerable, manufacturers have implemented countermeasures to reduce this risk.</p>
+            
+            <div class="card">
+                <h3>Code Synchronization Mechanics</h3>
+                <p>Rolling code systems maintain synchronization through sequential code generation:</p>
+                <ul>
+                    <li>If the current valid code is "011010110", the next code will be "011010111"</li>
+                    <li>Both the vehicle and key fob track this sequence</li>
+                </ul>
+                <p>In a RollJam scenario:</p>
+                <ol>
+                    <li>The vehicle and key fob are synchronized at code "0110"</li>
+                    <li>An attacker jams the signal when the user transmits code "0111"</li>
+                    <li>The vehicle never receives "0111", so it remains at code "0110"</li>
+                    <li>The key fob advances to code "1000"</li>
+                    <li>If the user presses the button again, transmitting "1000", the vehicle will synchronize to this new code</li>
+                    <li>All previous codes, including the captured "0111", become invalid</li>
+                </ol>
+                <p>This synchronization mechanism limits the attacker to a single use of any captured code, significantly reducing the attack's effectiveness.</p>
+            </div>
+        </section>
+    </main>
 </body>
 </html>
