@@ -590,13 +590,39 @@ body {
     cursor: pointer;
     text-decoration: none;
     transition: all 0.3s ease;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
 }
 
 .contact-btn:hover {
-    background: var(--secondary);
     transform: translateY(-3px);
     box-shadow: 0 8px 30px rgba(255, 0, 110, 0.3);
+}
+
+.github-btn {
+    background: var(--primary);
+}
+
+.github-btn:hover {
+    background: var(--secondary);
+}
+
+.tryhackme-btn {
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+}
+
+.tryhackme-btn:hover {
+    background: linear-gradient(135deg, #ff8555 0%, #ffa838 100%);
+    box-shadow: 0 8px 30px rgba(255, 107, 53, 0.4);
+}
+
+.btn-icon {
+    font-size: 1.2rem;
+}
+
+.btn-text {
+    font-weight: 600;
 }
 
 /* Footer */
