@@ -5,22 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RollJam Attack: Security Analysis | Mohamed Abdelhamid</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../article.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Floating background elements -->
+    <div class="bg-elements">
+        <div class="hex hex-1"></div>
+        <div class="hex hex-2"></div>
+        <div class="hex hex-3"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../" class="logo">
+                <span class="logo-bracket">&lt;</span>
+                <span class="logo-text">M.Abdelhamid</span>
+                <span class="logo-bracket">/&gt;</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../#about">About</a></li>
+                <li><a href="../#research">Research</a></li>
+                <li><a href="./">Writeups</a></li>
+                <li><a href="../#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="breadcrumb">
+        <a href="../">Home</a> / <a href="./">Writeups</a> / RollJam Attack
+    </div>
+
     <header>
         <h1>RollJam Attack Explained</h1>
-        <p>By Mohamed Abdelhamid</p>
+        <p>A Deep Dive into Keyless Entry System Vulnerabilities</p>
     </header>
 
     <!-- Disclaimer Section -->
-    <section class="disclaimer-section">
-        <p><strong>Disclaimer:</strong> This write-up is for <span class="highlight">educational and security awareness purposes only</span>. 
-        Unauthorized attempts to exploit keyless entry systems are illegal and unethical. Always practice responsible disclosure and security research in controlled environments.</p>
+    <section class="container">
+        <div class="disclaimer-section">
+            <p><strong>⚠️ Disclaimer:</strong> This write-up is for <span class="highlight">educational and security awareness purposes only</span>. 
+            Unauthorized attempts to exploit keyless entry systems are illegal and unethical. Always practice responsible disclosure and security research in controlled environments with proper authorization.</p>
+        </div>
     </section>
     
     <main class="container">
-        <section class="intro-section">
+        <section class="intro-sectionsophisticated method used to exploit vulnerabilities in keyless entry systems for vehicles. The attack involves capturing the radio frequency (RF) signals sent by a remote key fob when the owner attempts to lock or unlock their car. By combining RF jamming with signal interception, attackers can bypass modern rolling code security mechanisms.</p>
+            <p>This attack represents a significant evolution in vehicle security threats, as it targets the synchronization protocols used in modern vehicles rather than relying on capturing static codes
             <h1>What is a <span class="highlight">RollJam Attack?</span></h1>
             <p>A RollJam attack is a method used to exploit vulnerabilities in keyless entry systems for vehicles. The attack involves capturing the radio frequency signals sent by a remote key fob when the owner attempts to lock or unlock their car.</p>
         </section>
@@ -34,7 +65,7 @@
         </section>
 
         <section class="feasibility-section">
-            <h1>Is This Attack Still Possible?</h1>
+            <h1Yes, but the feasibility depends significantly on the vehicle's age and the security implementations used by manufacturers. There are two primary variants of this attack, which differ based on vehicle architecture and security protocols
             <p>There are two primary variants of this attack, which differ based on vehicle age and security implementation.</p>
         </section>
 
@@ -44,8 +75,24 @@
             <div class="card">
                 <h3>Older Vehicles (Approximately pre-2015-2020)</h3>
                 <p>Older vehicles typically used static, unchanging codes for their keyless entry systems. For example, the unlock code might be fixed as "0010110" and the lock code as "0010101".</p>
-                <p>This implementation creates a significant security vulnerability. If an attacker captures these codes using a device like a Flipper Zero, they gain permanent access to the vehicle. The captured codes remain valid indefinitely, allowing unlimited unauthorized access.</p>
-                <p class="conclusion">This vulnerability prompted manufacturers to develop more secure solutions for modern vehicles.</p>
+                <p><strong>Security Implications:</strong> This implementation creates a critical security vulnerability. If an attacker captures these codes using a device like a Flipper Zero or SDR (Software Defined Radio), they gain permanent access to the vehicle. The captured codes remain valid indefinitely, allowing unlimited unauthorized access without raising any flags.</p>
+                <p><strong>Attack Simplicity:</strong> The attack on older vehicles is straightforward:
+                    <ol>
+                        <li>Position an RF receiver near the target vehicle</li>
+                        <li>Capture the signal when the owner uses their key fob</li>
+                        <li>Replay  (2015-2020 onwards)</h3>
+                <p>Modern vehicles employ <span class="highlight">rolling code</span> technology to enhance security substantially. This system uses a vast sequence of codes shared between the key fob and vehicle receiver during the manufacturing/pairing process.</p>
+                <p><strong>How Rolling Codes Work:</strong></p>
+                <ul>
+                    <li>Each legitimate key press generates a unique code from a pre-computed sequence</li>
+                    <li>When a user presses the unlock button, the fob transmits a specific code (e.g., "0101101")</li>
+                    <li>The vehicle validates this code against its expected sequence</li>
+                    <li>Upon successful validation, the vehicle performs the requested action (unlock)</li>
+                    <li>Critically, the vehicle then removes that specific code from its accepted sequence</li>
+                    <li>If the same code is transmitted again, the vehicle automatically rejects it as invalid</li>
+                </ul>
+                <p>This security measure effectively prevents simple signal capture attacks. The same code can only be used once, making traditional replay attacks ineffective
+                <p class="conclusion">This critical vulnerability prompted manufacturers to develop rolling code technology, fundamentally changing the landscape of vehicle security.</p>
             </div>
             
             <div class="card">
@@ -97,6 +144,10 @@
             </div>
         </section>
     </main>
+
+    <footer>
+        <p>&copy; 2026 Mohamed Abdelhamid. Ethical Penetration Testing Research. All writeups are for educational purposes only.</p>
+    </footer>
 </body>
 </html>
 
