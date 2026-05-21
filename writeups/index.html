@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Writeups | Mohamed Abdelhamid</title>
+    <link rel="stylesheet" href="../writeups.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="bg-elements">
+        <div class="hex hex-1"></div>
+        <div class="hex hex-2"></div>
+        <div class="hex hex-3"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../" class="logo">
+                <span class="logo-bracket">&lt;</span>
+                <span class="logo-text">M.Abdelhamid</span>
+                <span class="logo-bracket">/&gt;</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../#about">About</a></li>
+                <li><a href="../#research">Research</a></li>
+                <li><a href="#">Writeups</a></li>
+                <li><a href="../#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="writeups-hero">
+            <div class="hero-content">
+                <h1>Security Research & Writeups</h1>
+                <p>In-depth analysis of vulnerabilities, attack techniques, and security discoveries</p>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search writeups..." class="search-input">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filter Section -->
+        <section class="filter-section">
+            <div class="filter-group">
+                <button class="filter-btn active" data-filter="all">All Writeups</button>
+                <button class="filter-btn" data-filter="vehicle">Vehicle Security</button>
+                <button class="filter-btn" data-filter="web">Web Security</button>
+                <button class="filter-btn" data-filter="hardware">Hardware</button>
+            </div>
+        </section>
+
+        <!-- Writeups Grid -->
+        <section class="writeups-grid">
+            <article class="writeup-card" data-category="vehicle">
+                <div class="card-wrapper">
+                    <div class="card-header">
+                        <span class="badge">Vehicle Security</span>
+                        <span class="difficulty hard">Advanced</span>
+                    </div>
+                    <div class="card-content">
+                        <h3>RollJam Attack Explained</h3>
+                        <p>A comprehensive analysis of keyless entry system vulnerabilities. Learn how rolling code technology works, why it's not bulletproof, and how modern cars attempt to mitigate relay attacks using Flipper Zero and similar devices.</p>
+                        
+                        <div class="card-metadata">
+                            <div class="meta-item">
+                                <span class="meta-label">Difficulty:</span>
+                                <span class="meta-value">Advanced</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Type:</span>
+                                <span class="meta-value">RF Hacking</span>
+                            </div>
+                        </div>
+
+                        <div class="topics">
+                            <span class="topic-tag">RF Analysis</span>
+                            <span class="topic-tag">Rolling Codes</span>
+                            <span class="topic-tag">Relay Attacks</span>
+                            <span class="topic-tag">Cryptography</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="RollJam-Attack.html" class="read-btn">
+                            <span>Read Full Article</span>
+                            <span class="arrow">→</span>
+                        </a>
+                        <span class="read-time">15 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Placeholder for future writeups -->
+            <article class="writeup-card coming-soon" data-category="web">
+                <div class="card-wrapper">
+                    <div class="coming-soon-badge">Coming Soon</div>
+                    <div class="card-content">
+                        <h3>SQL Injection Deep Dive</h3>
+                        <p>Exploring advanced SQL injection techniques, from basic attacks to time-based blind SQLi and automation with SQLmap.</p>
+                        <div class="topics">
+                            <span class="topic-tag">Web Security</span>
+                            <span class="topic-tag">SQL Injection</span>
+                            <span class="topic-tag">OWASP</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="writeup-card coming-soon" data-category="web">
+                <div class="card-wrapper">
+                    <div class="coming-soon-badge">Coming Soon</div>
+                    <div class="card-content">
+                        <h3>Web Application Pentesting Guide</h3>
+                        <p>A comprehensive guide to testing web applications for vulnerabilities using Burp Suite and OWASP Top 10 methodology.</p>
+                        <div class="topics">
+                            <span class="topic-tag">Web Pentesting</span>
+                            <span class="topic-tag">Burp Suite</span>
+                            <span class="topic-tag">OWASP</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="writeup-card coming-soon" data-category="hardware">
+                <div class="card-wrapper">
+                    <div class="coming-soon-badge">Coming Soon</div>
+                    <div class="card-content">
+                        <h3>Hardware Hacking Basics</h3>
+                        <p>Introduction to hardware hacking with tools like Flipper Zero, UART communication, and firmware extraction techniques.</p>
+                        <div class="topics">
+                            <span class="topic-tag">Hardware Hacking</span>
+                            <span class="topic-tag">Flipper Zero</span>
+                            <span class="topic-tag">UART</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <!-- No Results -->
+        <section class="no-results" id="noResults" style="display: none;">
+            <p>No writeups found matching your search.</p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Mohamed Abdelhamid. Ethical Security Research. All writeups are for educational purposes only.</p>
+    </footer>
+
+    <script src="../writeups-script.js"></script>
+</body>
+</html>
