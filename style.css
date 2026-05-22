@@ -420,6 +420,11 @@ body {
     color: #ff4757;
 }
 
+.difficulty.medium {
+    background: rgba(255, 165, 0, 0.2);
+    color: #ffa500;
+}
+
 .featured-card h3 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
