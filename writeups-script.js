@@ -25,10 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let visibleCount = 0;
 
         writeupCards.forEach(card => {
-            const cardCategory = card.getAttribute('data-category');
+            const cardCategories = card.getAttribute('data-category').split(' ');
             const cardText = card.textContent.toLowerCase();
 
-            let matches = category === 'all' || cardCategory === category;
+            let matches = category === 'all' || cardCategories.includes(category);
             matches = matches && (searchTerm === '' || cardText.includes(searchTerm));
 
             if (matches) {
