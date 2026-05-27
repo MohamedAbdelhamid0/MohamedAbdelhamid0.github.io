@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TryHackMe: Password Cracking | Mohamed Abdelhamid</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="../../article.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Floating background elements -->
+    <div class="bg-elements">
+        <div class="hex hex-1"></div>
+        <div class="hex hex-2"></div>
+        <div class="hex hex-3"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../" class="logo">
+                <span class="logo-bracket">&lt;</span>
+                <span class="logo-text">M.Abdelhamid</span>
+                <span class="logo-bracket">/&gt;</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../../#about">About</a></li>
+                <li><a href="../../#research">Research</a></li>
+                <li><a href="../">Writeups</a></li>
+                <li><a href="../../#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="breadcrumb">
+        <a href="../../">Home</a> / <a href="../">Writeups</a> / Password Cracking
+    </div>
+
+    <header>
+        <h1>TryHackMe: Password Cracking Writeup</h1>
+        <p>Hash Identification, Analysis, and Cracking Techniques</p>
+    </header>
+
+    <!-- Disclaimer Section -->
+    <section class="container">
+        <div class="disclaimer-section">
+            <p><strong>⚠️ Disclaimer:</strong> This write-up is for <span class="highlight">educational and security awareness purposes only</span>. 
+            The techniques discussed are part of authorized penetration testing and security research training. Always practice responsible disclosure and ethical security research in controlled environments with proper authorization.</p>
+        </div>
+    </section>
+    
+    <main class="container">
+        <!-- Question 1 -->
+        <section class="question-section">
+            <h2>Question 1: Identify the Hash Type</h2>
+            <div class="card">
+                <h3>Analysis</h3>
+                <p>By checking the <code>hash1.txt</code> using <code>hashid</code>, we can easily determine that it's an MD5 algorithm. The hash contains only 32 characters, which narrows the possibilities down to either MD5 or NTLM. The context helps identify the correct algorithm:</p>
+                <ul>
+                    <li>If the hash was grabbed from a hacked web database: ~90% probability it's MD5</li>
+                    <li>If the hash was grabbed from Active Directory: ~90-95% probability it's NTLM</li>
+                </ul>
+                <p>In this case, the hash is identified as <strong>MD5</strong>.</p>
+                <h3>Answer: md5</h3>
+            </div>
+        </section>
+
+        <!-- Question 2 -->
+        <section class="question-section">
+            <h2>Question 2: Determine the Hash Mode for SHA-256</h2>
+            <div class="card">
+                <h3>Analysis</h3>
+                <p>By easily determining the word count in <code>hash2.txt</code>, we can see it's 64 characters long, which clearly indicates it's a <strong>SHA-256</strong> hash. Now we need to find the corresponding mode number for hashcat.</p>
+                <p>We can either:</p>
+                <ul>
+                    <li>Search for the mode number in the hashcat documentation</li>
+                    <li>Run the <code>hashid</code> command on hash2.txt to display the mode number</li>
+                </ul>
+                <p>The hashcat mode number for SHA-256 is <strong>1400</strong>.</p>
+                <h3>Answer: 1400</h3>
+            </div>
+        </section>
+
+        <!-- Question 3 -->
+        <section class="question-section">
+            <h2>Question 3: Crack the MD5 Hash Using Hashcat</h2>
+            <div class="card">
+                <h3>Approach</h3>
+                <p>We want to find the password of an MD5 hash we have (from <code>hash1.txt</code>). We know nothing about the password except that the hash is MD5. The best option to try right now is to run a dictionary attack using the <code>rockyou.txt</code> wordlist with hashcat.</p>
+                <p>This approach means hashcat will:</p>
+                <ul>
+                    <li>Hash each password in the rockyou.txt wordlist</li>
+                    <li>Compare it to the hash we have (hash1.txt)</li>
+                    <li>Report a match when found</li>
+                </ul>
+                <h3>Execution</h3>
+                <pre><code>hashcat -m 0 -a 0 hash1.txt /usr/share/wordlists/rockyou.txt</code></pre>
+                <p>The command completed successfully and hashcat easily cracked the hash!</p>
+                <h3>Answer: 123456</h3>
+            </div>
+        </section>
+
+        <!-- Question 4 -->
+        <section class="question-section">
+            <h2>Question 4: Crack Multiple Hashes</h2>
+            <div class="card">
+                <h3>Initial Analysis</h3>
+                <p>By using the <code>wc</code> command to check the hashes initially, we observe:</p>
+                <ul>
+                    <li><code>hash2</code>: 64 characters (SHA-256)</li>
+                    <li><code>hash3</code>: 32 characters (Likely MD5)</li>
+                </ul>
+                <p>Since both hashes share the same password, we'll tackle the easier MD5 hash first to determine the password, then verify it works for the SHA-256 hash as well.</p>
+                <h3>Cracking Strategy</h3>
+                <p>We'll use the same hashcat approach with the rockyou.txt wordlist for the MD5 hash (hash3):</p>
+                <pre><code>hashcat -m 0 -a 0 hash3.txt /usr/share/wordlists/rockyou.txt</code></pre>
+                <p>Once we identify the password, we can verify it against both hashes to confirm they share the same plaintext password.</p>
+            </div>
+        </section>
+
+        <!-- Key Takeaways Section -->
+        <section class="key-takeaways">
+            <h2>Key Takeaways</h2>
+            <div class="card">
+                <ul>
+                    <li><strong>Hash Identification:</strong> Character count is the first indicator (32 chars = MD5, 64 chars = SHA-256)</li>
+                    <li><strong>Hashid Tool:</strong> Use <code>hashid</code> to quickly identify hash types and get hashcat mode numbers</li>
+                    <li><strong>Dictionary Attacks:</strong> Dictionary attacks with rockyou.txt are highly effective for common passwords</li>
+                    <li><strong>Hashcat Modes:</strong> Mode 0 is MD5, Mode 1400 is SHA-256, understand these mappings</li>
+                    <li><strong>Attack Types:</strong> Mode -a 0 represents dictionary/wordlist attacks in hashcat</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Tools Used Section -->
+        <section class="tools-used">
+            <h2>Tools Used</h2>
+            <div class="card">
+                <ul>
+                    <li><strong>hashid:</strong> Hash type identification utility</li>
+                    <li><strong>hashcat:</strong> Advanced password recovery tool</li>
+                    <li><strong>rockyou.txt:</strong> Comprehensive wordlist for password cracking</li>
+                    <li><strong>wc:</strong> Word/character count utility for determining hash length</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Mohamed Abdelhamid. Ethical Security Research. All writeups are for educational purposes only.</p>
+    </footer>
+</body>
+</html>
