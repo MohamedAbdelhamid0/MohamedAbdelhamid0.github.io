@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TryHackMe: Password Cracking | Mohamed Abdelhamid</title>
+    <title>TryHackMe: Password Cracking Writeup | Mohamed Abdelhamid</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="../../article.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -26,76 +26,99 @@
             <ul class="nav-links">
                 <li><a href="../../#about">About</a></li>
                 <li><a href="../../#research">Research</a></li>
-                <li><a href="../">Writeups</a></li>
+                <li><a href="./">Writeups</a></li>
                 <li><a href="../../#contact">Contact</a></li>
             </ul>
         </div>
     </nav>
 
     <div class="breadcrumb">
-        <a href="../../">Home</a> / <a href="../">Writeups</a> / Password Cracking
+        <a href="../../">Home</a> / <a href="../">Writeups</a> / TryHackMe: Password Cracking
     </div>
 
     <header>
         <h1>TryHackMe: Password Cracking Writeup</h1>
-        <p>Hash Identification, Analysis, and Cracking Techniques</p>
+        <p>Hash Identification and Dictionary Attack Techniques</p>
     </header>
 
     <!-- Disclaimer Section -->
     <section class="container">
         <div class="disclaimer-section">
             <p><strong>⚠️ Disclaimer:</strong> This write-up is for <span class="highlight">educational and security awareness purposes only</span>. 
-            The techniques discussed are part of authorized penetration testing and security research training. Always practice responsible disclosure and ethical security research in controlled environments with proper authorization.</p>
+            The techniques described should only be used on systems you own or have explicit authorization to test. Unauthorized access to computer systems is illegal and unethical. Always practice responsible disclosure and security research in controlled environments.</p>
         </div>
     </section>
-    
+
     <main class="container">
+        <!-- Introduction Section -->
+        <section class="intro-section">
+            <h1>Introduction to Password Cracking</h1>
+            <p>Password cracking is a critical cybersecurity skill that involves identifying passwords protected by various hashing algorithms. This writeup covers essential techniques for hash identification, determining the correct hashcat mode, and executing effective dictionary attacks using industry-standard tools and wordlists.</p>
+        </section>
+
         <!-- Question 1 -->
         <section class="question-section">
-            <h2>Question 1: Identify the Hash Type</h2>
+            <h2>Question 1: Identify the Hash Algorithm</h2>
+            
+            <div class="image-container">
+                <img src="Pasted image 20260527133150.png" alt="Question 1 - Hash identification task" class="question-image">
+            </div>
+
+            <p>By checking the hash1.txt using <span class="highlight">hashid</span>, we can easily see that it's an MD5 algorithm. Also, hash1.txt has only 32 characters, so it's either MD5 or NTLM. The only way to find out is to consider the context: if this hash was grabbed from a hacked web database, it's 90% MD5. However, if this hash was grabbed from Active Directory, then 90%-95% of the time it would be NTLM.</p>
+
+            <div class="image-container">
+                <img src="Pasted image 20260527133201.png" alt="Hash identification result showing MD5 format" class="question-image">
+            </div>
+
             <div class="card">
-                <h3>Analysis</h3>
-                <p>By checking the <code>hash1.txt</code> using <code>hashid</code>, we can easily determine that it's an MD5 algorithm. The hash contains only 32 characters, which narrows the possibilities down to either MD5 or NTLM. The context helps identify the correct algorithm:</p>
-                <ul>
-                    <li>If the hash was grabbed from a hacked web database: ~90% probability it's MD5</li>
-                    <li>If the hash was grabbed from Active Directory: ~90-95% probability it's NTLM</li>
-                </ul>
-                <p>In this case, the hash is identified as <strong>MD5</strong>.</p>
                 <h3>Answer: md5</h3>
             </div>
         </section>
 
         <!-- Question 2 -->
         <section class="question-section">
-            <h2>Question 2: Determine the Hash Mode for SHA-256</h2>
+            <h2>Question 2: Determine the Hashcat Mode</h2>
+            
+            <p>By easily determining the word count in hash2, we can see it has 64 characters, which means it's <span class="highlight">SHA-256</span>. Now we can either search and find the mode number, or we can run the identify command for hash2.txt, which will show us the mode number <span class="highlight">1400</span>.</p>
+
+            <div class="image-container">
+                <img src="Pasted image 20260527133224.png" alt="Hash analysis showing SHA-256 characteristics" class="question-image">
+            </div>
+
+            <div class="image-container">
+                <img src="Pasted image 20260527133251.png" alt="Hashcat mode identification output" class="question-image">
+            </div>
+
+            <div class="image-container">
+                <img src="Pasted image 20260527133309.png" alt="SHA-256 hashcat mode 1400 confirmation" class="question-image">
+            </div>
+
             <div class="card">
-                <h3>Analysis</h3>
-                <p>By easily determining the word count in <code>hash2.txt</code>, we can see it's 64 characters long, which clearly indicates it's a <strong>SHA-256</strong> hash. Now we need to find the corresponding mode number for hashcat.</p>
-                <p>We can either:</p>
-                <ul>
-                    <li>Search for the mode number in the hashcat documentation</li>
-                    <li>Run the <code>hashid</code> command on hash2.txt to display the mode number</li>
-                </ul>
-                <p>The hashcat mode number for SHA-256 is <strong>1400</strong>.</p>
                 <h3>Answer: 1400</h3>
             </div>
         </section>
 
         <!-- Question 3 -->
         <section class="question-section">
-            <h2>Question 3: Crack the MD5 Hash Using Hashcat</h2>
+            <h2>Question 3: Crack the MD5 Hash Using Dictionary Attack</h2>
+
+            <div class="image-container">
+                <img src="Pasted image 20260527133802.png" alt="Question 3 - Password cracking challenge" class="question-image">
+            </div>
+
+            <p>Now let's think about this scenario. We want to find the password of a hash we grabbed. This hash is MD5 (confirmed) and we know nothing about it. All we know is that it's MD5. The best option to try right now is to run the <span class="highlight">rockyou.txt</span> command with hashcat. This basically means hashcat will hash each password in the rockyou wordlist and compare it to the hash we have (hash1.txt).</p>
+
+            <div class="image-container">
+                <img src="Pasted image 20260527134036.png" alt="Hashcat command execution with rockyou wordlist" class="question-image">
+            </div>
+
+            <p>After running this command, hashcat easily cracked the hash!</p>
+
+            <div class="image-container">
+                <img src="Pasted image 20260527134420.png" alt="Successful hash crack result" class="question-image">
+            </div>
+
             <div class="card">
-                <h3>Approach</h3>
-                <p>We want to find the password of an MD5 hash we have (from <code>hash1.txt</code>). We know nothing about the password except that the hash is MD5. The best option to try right now is to run a dictionary attack using the <code>rockyou.txt</code> wordlist with hashcat.</p>
-                <p>This approach means hashcat will:</p>
-                <ul>
-                    <li>Hash each password in the rockyou.txt wordlist</li>
-                    <li>Compare it to the hash we have (hash1.txt)</li>
-                    <li>Report a match when found</li>
-                </ul>
-                <h3>Execution</h3>
-                <pre><code>hashcat -m 0 -a 0 hash1.txt /usr/share/wordlists/rockyou.txt</code></pre>
-                <p>The command completed successfully and hashcat easily cracked the hash!</p>
                 <h3>Answer: 123456</h3>
             </div>
         </section>
@@ -103,32 +126,70 @@
         <!-- Question 4 -->
         <section class="question-section">
             <h2>Question 4: Crack Multiple Hashes</h2>
-            <div class="card">
-                <h3>Initial Analysis</h3>
-                <p>By using the <code>wc</code> command to check the hashes initially, we observe:</p>
-                <ul>
-                    <li><code>hash2</code>: 64 characters (SHA-256)</li>
-                    <li><code>hash3</code>: 32 characters (Likely MD5)</li>
-                </ul>
-                <p>Since both hashes share the same password, we'll tackle the easier MD5 hash first to determine the password, then verify it works for the SHA-256 hash as well.</p>
-                <h3>Cracking Strategy</h3>
-                <p>We'll use the same hashcat approach with the rockyou.txt wordlist for the MD5 hash (hash3):</p>
-                <pre><code>hashcat -m 0 -a 0 hash3.txt /usr/share/wordlists/rockyou.txt</code></pre>
-                <p>Once we identify the password, we can verify it against both hashes to confirm they share the same plaintext password.</p>
+
+            <div class="image-container">
+                <img src="Pasted image 20260527141049.png" alt="Question 4 - Multiple hash cracking challenge" class="question-image">
+            </div>
+
+            <p>By using the <span class="highlight">wc</span> command to initially check the hashes, we can see that hash2 has 64 characters (SHA-256) and hash3 has 32 characters, which is probably MD5. Let's try to crack the MD5 first since it's easier. Since both share the same password, let's take the easier step. We will use the same approach as we did in Question 3:</p>
+
+            <pre><code>hashcat -m 0 -a 0 hash3.txt rockyou.txt</code></pre>
+
+            <p>The command parameters are:</p>
+            <ul>
+                <li><span class="highlight">-m 0</span>: Specifies MD5 hash mode</li>
+                <li><span class="highlight">-a 0</span>: Dictionary attack mode (straight mode)</li>
+                <li><span class="highlight">hash3.txt</span>: The file containing the hash to crack</li>
+                <li><span class="highlight">rockyou.txt</span>: The wordlist to use for the dictionary attack</li>
+            </ul>
+
+            <div class="image-container">
+                <img src="Pasted image 20260527141046.png" alt="Hash analysis showing character counts" class="question-image">
+            </div>
+
+            <div class="image-container">
+                <img src="Pasted image 20260527142916.png" alt="MD5 hash cracking in progress" class="question-image">
+            </div>
+
+            <div class="image-container">
+                <img src="Pasted image 20260527143551.png" alt="Successful MD5 hash crack result" class="question-image">
+            </div>
+
+            <p>Once we crack hash3 (MD5), we can now use the same password to verify against hash2 (SHA-256). Since both hashes were created from the same password, we can attempt to crack the SHA-256 hash using the mode 1400:</p>
+
+            <pre><code>hashcat -m 1400 -a 0 hash2.txt rockyou.txt</code></pre>
+
+            <div class="image-container">
+                <img src="Pasted image 20260527143625.png" alt="SHA-256 hash cracking attempt" class="question-image">
+            </div>
+
+            <div class="image-container">
+                <img src="Pasted image 20260527144107.png" alt="SHA-256 hash crack result" class="question-image">
+            </div>
+
+            <div class="image-container">
+                <img src="Pasted image 20260527144148.png" alt="Final password verification" class="question-image">
             </div>
         </section>
 
-        <!-- Key Takeaways Section -->
+        <!-- Key Takeaways -->
         <section class="key-takeaways">
             <h2>Key Takeaways</h2>
             <div class="card">
-                <ul>
-                    <li><strong>Hash Identification:</strong> Character count is the first indicator (32 chars = MD5, 64 chars = SHA-256)</li>
-                    <li><strong>Hashid Tool:</strong> Use <code>hashid</code> to quickly identify hash types and get hashcat mode numbers</li>
-                    <li><strong>Dictionary Attacks:</strong> Dictionary attacks with rockyou.txt are highly effective for common passwords</li>
-                    <li><strong>Hashcat Modes:</strong> Mode 0 is MD5, Mode 1400 is SHA-256, understand these mappings</li>
-                    <li><strong>Attack Types:</strong> Mode -a 0 represents dictionary/wordlist attacks in hashcat</li>
-                </ul>
+                <h3>Hash Identification Techniques</h3>
+                <p>Understanding hash characteristics like character length is fundamental. MD5 produces 32-character hashes, while SHA-256 produces 64-character hashes. Tools like hashid automate this identification process.</p>
+            </div>
+            <div class="card">
+                <h3>Hashcat Modes</h3>
+                <p>Each hashing algorithm has a specific mode number in hashcat. Mode 0 is MD5 (32 chars), and mode 1400 is SHA-256 (64 chars). Knowing these modes is essential for efficient password cracking.</p>
+            </div>
+            <div class="card">
+                <h3>Dictionary Attacks</h3>
+                <p>Dictionary attacks are highly effective when using comprehensive wordlists like rockyou.txt. These attacks work by comparing hashed versions of dictionary words against the target hash.</p>
+            </div>
+            <div class="card">
+                <h3>Attack Mode Selection</h3>
+                <p>Attack mode 0 (-a 0) represents a straight dictionary attack, which is the most common and effective for standard password cracking scenarios without additional rules or mangling.</p>
             </div>
         </section>
 
@@ -136,18 +197,32 @@
         <section class="tools-used">
             <h2>Tools Used</h2>
             <div class="card">
-                <ul>
-                    <li><strong>hashid:</strong> Hash type identification utility</li>
-                    <li><strong>hashcat:</strong> Advanced password recovery tool</li>
-                    <li><strong>rockyou.txt:</strong> Comprehensive wordlist for password cracking</li>
-                    <li><strong>wc:</strong> Word/character count utility for determining hash length</li>
-                </ul>
+                <h3>Hashid</h3>
+                <p>Identifies hash types based on character length and format. Essential for determining which cracking mode to use.</p>
             </div>
+            <div class="card">
+                <h3>Hashcat</h3>
+                <p>Industry-standard password cracking tool supporting multiple hash algorithms and attack modes with GPU acceleration.</p>
+            </div>
+            <div class="card">
+                <h3>Rockyou Wordlist</h3>
+                <p>One of the most comprehensive and commonly used wordlists for dictionary attacks, containing millions of real-world passwords.</p>
+            </div>
+            <div class="card">
+                <h3>Linux Utilities (wc, etc.)</h3>
+                <p>Command-line tools for analyzing file content and hash characteristics quickly without specialized tools.</p>
+            </div>
+        </section>
+
+        <!-- Conclusion -->
+        <section>
+            <h2>Conclusion</h2>
+            <p>Password cracking is a systematic process that begins with proper hash identification and ends with targeted attack strategies. By understanding hash characteristics, hashcat modes, and dictionary attack principles, security professionals can effectively assess password security and identify weak authentication mechanisms. Remember to always conduct these activities only on systems you have explicit authorization to test.</p>
         </section>
     </main>
 
-    <footer class="footer">
-        <p>&copy; 2026 Mohamed Abdelhamid. Ethical Security Research. All writeups are for educational purposes only.</p>
+    <footer>
+        <p>&copy; 2026 Mohamed Abdelhamid. Ethical Penetration Testing Research. All writeups are for educational purposes only.</p>
     </footer>
 </body>
 </html>
