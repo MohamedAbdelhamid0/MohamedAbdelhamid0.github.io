@@ -61,13 +61,13 @@
             <h2>Question 1: Identify the Hash Algorithm</h2>
             
             <div class="image-container">
-                <img src="Pasted image 20260527133150.png" alt="Question 1 - Hash identification task" class="question-image">
+                <img src="Pasted_image_20260527133150.png" alt="Question 1 - Hash identification task" class="question-image">
             </div>
 
             <p>By checking the hash1.txt using <span class="highlight">hashid</span>, we can easily see that it's an MD5 algorithm. Also, hash1.txt has only 32 characters, so it's either MD5 or NTLM. The only way to find out is to consider the context: if this hash was grabbed from a hacked web database, it's 90% MD5. However, if this hash was grabbed from Active Directory, then 90%-95% of the time it would be NTLM.</p>
 
             <div class="image-container">
-                <img src="Pasted image 20260527133201.png" alt="Hash identification result showing MD5 format" class="question-image">
+                <img src="Pasted_image_20260527133201.png" alt="Hash identification result showing MD5 format" class="question-image">
             </div>
 
             <div class="card">
@@ -82,15 +82,15 @@
             <p>By easily determining the word count in hash2, we can see it has 64 characters, which means it's <span class="highlight">SHA-256</span>. Now we can either search and find the mode number, or we can run the identify command for hash2.txt, which will show us the mode number <span class="highlight">1400</span>.</p>
 
             <div class="image-container">
-                <img src="Pasted image 20260527133224.png" alt="Hash analysis showing SHA-256 characteristics" class="question-image">
+                <img src="Pasted_image_20260527133224.png" alt="Hash analysis showing SHA-256 characteristics" class="question-image">
             </div>
 
             <div class="image-container">
-                <img src="Pasted image 20260527133251.png" alt="Hashcat mode identification output" class="question-image">
+                <img src="Pasted_image_20260527133251.png" alt="Hashcat mode identification output" class="question-image">
             </div>
 
             <div class="image-container">
-                <img src="Pasted image 20260527133309.png" alt="SHA-256 hashcat mode 1400 confirmation" class="question-image">
+                <img src="Pasted_image_20260527133309.png" alt="SHA-256 hashcat mode 1400 confirmation" class="question-image">
             </div>
 
             <div class="card">
@@ -103,19 +103,19 @@
             <h2>Question 3: Crack the MD5 Hash Using Dictionary Attack</h2>
 
             <div class="image-container">
-                <img src="Pasted image 20260527133802.png" alt="Question 3 - Password cracking challenge" class="question-image">
+                <img src="Pasted_image_20260527133802.png" alt="Question 3 - Password cracking challenge" class="question-image">
             </div>
 
             <p>Now let's think about this scenario. We want to find the password of a hash we grabbed. This hash is MD5 (confirmed) and we know nothing about it. All we know is that it's MD5. The best option to try right now is to run the <span class="highlight">rockyou.txt</span> command with hashcat. This basically means hashcat will hash each password in the rockyou wordlist and compare it to the hash we have (hash1.txt).</p>
 
             <div class="image-container">
-                <img src="Pasted image 20260527134036.png" alt="Hashcat command execution with rockyou wordlist" class="question-image">
+                <img src="Pasted_image_20260527134036.png" alt="Hashcat command execution with rockyou wordlist" class="question-image">
             </div>
 
             <p>After running this command, hashcat easily cracked the hash!</p>
 
             <div class="image-container">
-                <img src="Pasted image 20260527134420.png" alt="Successful hash crack result" class="question-image">
+                <img src="Pasted_image_20260527134420.png" alt="Successful hash crack result" class="question-image">
             </div>
 
             <div class="card">
@@ -128,7 +128,7 @@
             <h2>Question 4: Crack Multiple Hashes</h2>
 
             <div class="image-container">
-                <img src="Pasted image 20260527141049.png" alt="Question 4 - Multiple hash cracking challenge" class="question-image">
+                <img src="Pasted_image_20260527141049.png" alt="Question 4 - Multiple hash cracking challenge" class="question-image">
             </div>
 
             <p>By using the <span class="highlight">wc</span> command to initially check the hashes, we can see that hash2 has 64 characters (SHA-256) and hash3 has 32 characters, which is probably MD5. Let's try to crack the MD5 first since it's easier. Since both share the same password, let's take the easier step. We will use the same approach as we did in Question 3:</p>
@@ -144,15 +144,15 @@
             </ul>
 
             <div class="image-container">
-                <img src="Pasted image 20260527141046.png" alt="Hash analysis showing character counts" class="question-image">
+                <img src="Pasted_image_20260527141046.png" alt="Hash analysis showing character counts" class="question-image">
             </div>
 
             <div class="image-container">
-                <img src="Pasted image 20260527142916.png" alt="MD5 hash cracking in progress" class="question-image">
+                <img src="Pasted_image_20260527142916.png" alt="MD5 hash cracking in progress" class="question-image">
             </div>
 
             <div class="image-container">
-                <img src="Pasted image 20260527143551.png" alt="Successful MD5 hash crack result" class="question-image">
+                <img src="Pasted_image_20260527143551.png" alt="Successful MD5 hash crack result" class="question-image">
             </div>
 
             <p>Once we crack hash3 (MD5), we can now use the same password to verify against hash2 (SHA-256). Since both hashes were created from the same password, we can attempt to crack the SHA-256 hash using the mode 1400:</p>
@@ -160,15 +160,15 @@
             <pre><code>hashcat -m 1400 -a 0 hash2.txt rockyou.txt</code></pre>
 
             <div class="image-container">
-                <img src="Pasted image 20260527143625.png" alt="SHA-256 hash cracking attempt" class="question-image">
+                <img src="Pasted_image_20260527143625.png" alt="SHA-256 hash cracking attempt" class="question-image">
             </div>
 
             <div class="image-container">
-                <img src="Pasted image 20260527144107.png" alt="SHA-256 hash crack result" class="question-image">
+                <img src="Pasted_image_20260527144107.png" alt="SHA-256 hash crack result" class="question-image">
             </div>
 
             <div class="image-container">
-                <img src="Pasted image 20260527144148.png" alt="Final password verification" class="question-image">
+                <img src="Pasted_image_20260527144148.png" alt="Final password verification" class="question-image">
             </div>
         </section>
 
