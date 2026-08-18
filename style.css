@@ -437,6 +437,13 @@ body {
     line-height: 1.7;
 }
 
+.experience-subtitle {
+    color: var(--primary) !important;
+    font-weight: 600;
+    margin-top: -0.25rem;
+    margin-bottom: 1.25rem !important;
+}
+
 .card-meta {
     display: flex;
     gap: 0.8rem;
